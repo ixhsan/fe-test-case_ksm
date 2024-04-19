@@ -7,7 +7,7 @@ export const todoApi = api
   .injectEndpoints({
     endpoints: (builder) => ({
       getTodos: builder.query<Todo[], Params>({
-        query: ({ _start = 10, _limit = 10 }) =>
+        query: ({ _start = 0, _limit = 10 }) =>
           `/todos?${new URLSearchParams({
             _start: String(_start),
             _limit: String(_limit),

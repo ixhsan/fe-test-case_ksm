@@ -1,14 +1,9 @@
-import { Inter } from "next/font/google";
-import NavBar from "@/components/NavBar";
 import List from "@/components/List";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main className={`min-h-screen px-6 md:px-12 py-8 ${inter.className}`}>
-      <NavBar />
-      <List />
-    </main>
+    <div className="flex flex-col gap-4">
+      <h1 className=" text-5xl text-center font-bold">Hello Welcome!</h1>
+    </div>
   );
 }

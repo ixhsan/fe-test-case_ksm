@@ -1,3 +1,5 @@
+import MainWrapper from "@/components/MainWrapper";
+import NavBar from "@/components/NavBar";
 import { wrapper } from "@/store";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
@@ -7,7 +9,11 @@ function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
   return (
     <Provider store={store}>
-      <Component {...props.pageProps} />
+      <MainWrapper>
+        <NavBar>
+          <Component {...props.pageProps} />
+        </NavBar>
+      </MainWrapper>
     </Provider>
   );
 }

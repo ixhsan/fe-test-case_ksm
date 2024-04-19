@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // const todoHead = [
 //   {
@@ -60,14 +61,15 @@ const Todos: FC<TodosProps> = (
   //   reqMatched: reqSSR === reqCSR,
   // });
 
-  if (isLoading || router.isFallback) return <div>Loading...</div>;
+  if (isLoading || router.isFallback)
+    return <Skeleton className="min-w-[100px] min-h-[20px] rounded-full" />;
 
   return (
-    <div className="min-h-screen px-6 md:px-12 py-8">
-      <h1>Todo List</h1>
+    <div className=" px-6 md:px-12 py-8 border-2">
+      <h1>Todo List with Client-Side Rendering</h1>
 
       <Table>
-        <TableCaption>Todo List with Client Side Rendering</TableCaption>
+        <TableCaption>Todo List</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">No</TableHead>
@@ -82,10 +84,15 @@ const Todos: FC<TodosProps> = (
               <TableCell className="font-medium">{todo.id}</TableCell>
               <TableCell>{todo.title}</TableCell>
               <TableCell>{todo.userId}</TableCell>
-              <TableCell className="text-right">{todo.completed}</TableCell>
+              <TableCell
+                className={`text-right${
+                  todo.completed ? " bg-lime-400" : ` bg-rose-300`
+                }`}
+              >
+                {todo.completed ? "Complete" : "Not yet"}
+              </TableCell>
             </TableRow>
           ))}
-          <TableRow></TableRow>
         </TableBody>
       </Table>
     </div>
