@@ -12,7 +12,11 @@ const menuItems = [
   },
   {
     id: "SSR",
-    path: "/ssr",
+    path: "/todos/ssr",
+  },
+  {
+    id: "ISR",
+    path: "/todos/isr",
   },
 ];
 
@@ -27,7 +31,7 @@ const NavBar: FC<NavBarProps> = ({ children }: NavBarProps) => {
         {menuItems.map((menu) => (
           <Link
             key={menu.id}
-            className="bg-blue-400 hover:bg-blue-800 p-2 px-8 rounded-lg flex-grow-0"
+            className="bg-white hover:bg-slate-600 p-2 px-8 rounded-lg flex-grow-0"
             href={menu.path}
           >
             {menu.id}

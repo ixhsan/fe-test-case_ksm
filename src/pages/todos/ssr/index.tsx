@@ -7,20 +7,26 @@ import Todos from "..";
 export default Todos;
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context) => {
-    // Fetch data from external API
+  (store) =>
+    async ({ params, query }) => {
+      // Fetch data from external API
 
-    const data = store.dispatch(getTodos.initiate({}));
-    await Promise.all(store.dispatch(getRunningQueriesThunk()));
+      const data = store.dispatch(
+        getTodos.initiate({
+          _start: typeof query._start === "string" ? query._start : "0",
+          _limit: typeof query._limit === "string" ? query._limit : "10",
+        })
+      );
+      await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
-    return {
-      props: {
-        todos: [] as Todo[],
-        requestId: (await data).isSuccess ? data.requestId : "",
-        fulfilledTime: (await data).isSuccess
-          ? (await data).fulfilledTimeStamp
-          : 0,
-      },
-    };
-  }
+      return {
+        props: {
+          todos: [] as Todo[],
+          requestId: (await data).isSuccess ? data.requestId : "",
+          fulfilledTime: (await data).isSuccess
+            ? (await data).fulfilledTimeStamp
+            : 0,
+        },
+      };
+    }
 ) satisfies GetServerSideProps<TodosProps>;

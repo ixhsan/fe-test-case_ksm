@@ -1,6 +1,5 @@
 export interface Params {
-  _start?: number;
-  _limit?: number;
+  [key: string]: string;
 }
 
 export interface Todo {
