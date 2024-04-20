@@ -98,9 +98,9 @@ const TodoDialog: FC<TodoDialogProps> = ({ open, onOpen }: TodoDialogProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Insert title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
