@@ -26,12 +26,15 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAddTodoMutation } from "@/features/todo/todoApi";
 import { Dispatch, FC, SetStateAction } from "react";
+import { useRouter } from "next/router";
+import usePagination from "@/hooks/usePagination";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -48,6 +51,9 @@ interface TodoDialogProps {
 }
 
 const TodoDialog: FC<TodoDialogProps> = ({ open, onOpen }: TodoDialogProps) => {
+  const { _limit } = usePagination();
+  const router = useRouter();
+
   // 1. Define your form.
 
   const [addTodo, addState] = useAddTodoMutation();
@@ -69,6 +75,7 @@ const TodoDialog: FC<TodoDialogProps> = ({ open, onOpen }: TodoDialogProps) => {
       await addTodo({
         data: { title: values.title, userId: parseInt(values.userId) },
       });
+      router.push(`${router.pathname}?_start=0&_limit=${_limit}`);
       onOpen(false);
     } catch (error) {
       console.log(error);
@@ -77,16 +84,12 @@ const TodoDialog: FC<TodoDialogProps> = ({ open, onOpen }: TodoDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpen}>
-      <DialogTrigger className="px-8 py-2 rounded-md bg-blue-400 mb-2">
+      <DialogTrigger className="px-8 py-2 rounded-md bg-blue-400 mb-2 text-white">
         Add Todo
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Todo</DialogTitle>
-          {/* <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription> */}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
@@ -99,9 +102,6 @@ const TodoDialog: FC<TodoDialogProps> = ({ open, onOpen }: TodoDialogProps) => {
                   <FormControl>
                     <Input placeholder="shadcn" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -110,24 +110,29 @@ const TodoDialog: FC<TodoDialogProps> = ({ open, onOpen }: TodoDialogProps) => {
               control={form.control}
               name="userId"
               render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select user" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {userIds.map((userId) => (
-                      <SelectItem key={userId} value={userId}>
-                        {userId}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormItem>
+                  <FormLabel>User-ID</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {userIds.map((userId) => (
+                        <SelectItem key={userId} value={userId}>
+                          {userId}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <DialogFooter>
+              <Button type="submit">Submit</Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

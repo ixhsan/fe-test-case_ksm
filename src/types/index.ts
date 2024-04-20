@@ -10,7 +10,10 @@ export interface Todo {
 }
 
 export interface TodosProps {
+  title?: string;
+  mode: "csr" | "ssr" | "isr";
   todos: Todo[];
   requestId?: string;
   fulfilledTime?: number;
+  updatedAt?: number;
 }

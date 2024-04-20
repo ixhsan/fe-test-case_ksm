@@ -8,24 +8,31 @@ export default Todos;
 
 export const getStaticProps = wrapper.getStaticProps(
   (store) => async (context) => {
-    console.log({ context });
-    // Fetch data from external API
+    // console.log({ context: context.preview, data: context.previewData });
 
-    const data = store.dispatch(
+    const data = await store.dispatch(
       getTodos.initiate({
-        // _start: typeof query._start === "string" ? query._start : "0",
-        // _limit: typeof query._limit === "string" ? query._limit : "10",
+        _start:
+          context.params && typeof context.params._start === "string"
+            ? context.params._start
+            : "0",
+        _limit:
+          context.params && typeof context.params._limit === "string"
+            ? context.params._limit
+            : "10",
       })
     );
-    await Promise.all(store.dispatch(getRunningQueriesThunk()));
+
+    // await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
     return {
       props: {
-        todos: [] as Todo[],
-        requestId: (await data).isSuccess ? data.requestId : "",
-        fulfilledTime: (await data).isSuccess
-          ? (await data).fulfilledTimeStamp
-          : 0,
+        title: "Incremental Static Regeneration (ISR)",
+        mode: "isr",
+        todos: data.isSuccess ? data.data : ([] as Todo[]),
+        requestId: data.isSuccess ? data.requestId : "",
+        fulfilledTime: data.isSuccess ? data.fulfilledTimeStamp : 0,
+        updatedAt: Date.now(),
       },
       revalidate: 10,
     };

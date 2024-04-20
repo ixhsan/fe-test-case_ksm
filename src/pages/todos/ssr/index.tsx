@@ -17,15 +17,19 @@ export const getServerSideProps = wrapper.getServerSideProps(
           _limit: typeof query._limit === "string" ? query._limit : "10",
         })
       );
+
       await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
       return {
         props: {
+          title: "Server Side Rendering (SSR)",
+          mode: "ssr",
           todos: [] as Todo[],
           requestId: (await data).isSuccess ? data.requestId : "",
           fulfilledTime: (await data).isSuccess
             ? (await data).fulfilledTimeStamp
             : 0,
+          updatedAt: Date.now(),
         },
       };
     }

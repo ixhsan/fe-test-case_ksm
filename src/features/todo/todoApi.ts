@@ -31,7 +31,10 @@ export const todoApi = api
             body: data,
           };
         },
-        invalidatesTags: (res) => [{ type: tagTypes.todo, id: res?.id }],
+        invalidatesTags: (res) => [
+          { type: tagTypes.todo, id: res?.id },
+          { type: tagTypes.todo, id: "LIST" },
+        ],
       }),
     }),
     overrideExisting: false,

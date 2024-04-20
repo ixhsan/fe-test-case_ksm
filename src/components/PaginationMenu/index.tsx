@@ -38,7 +38,7 @@ export default function PaginationMenu() {
       : "10";
 
   return (
-    <Pagination className="flex justify-between">
+    <Pagination className="flex justify-between mb-2">
       <PaginationContent className="flex gap-4">
         {pageSizes.map((pageSize, idx) => (
           <PaginationLink
